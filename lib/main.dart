@@ -217,7 +217,6 @@ class _CountryTable extends StatelessWidget {
               DataCell(Text(country.area.toString())),
               DataCell(Text(country.population.toString())),
               DataCell(Text(country.wikiURL)),
-              //DataCell(Text('${book.title} (${book.year.toString()})')),
               DataCell(IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () async {
