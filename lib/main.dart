@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countries_with_repository/controllers/controllers.dart';
+import 'package:flutter_countries_with_repository/data-access-layer/database/mockup_country_db.dart';
 import 'package:flutter_countries_with_repository/data-access-layer/models/models.dart';
+import 'package:flutter_countries_with_repository/repositories/country_repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,16 +19,20 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Country repo demo"),
         ),
-        body: HomePage(),
+        body: HomePage(
+            controller: CountryController(
+                repository: CountryRepository(countryDB: MockupCountryDB()))),
       ),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  final CountryController controller;
 
-  final CountryController controller = CountryController();
+  const HomePage({super.key, required this.controller});
+
+  //final CountryController controller = CountryController();
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,10 +45,20 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      _Form(widget.controller, () => _refreshList()),
-      _CountryTable(widget.controller, () => _refreshList()),
-    ]);
+    return SingleChildScrollView(
+      key: const Key('scrollView_vertical'),
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          _Form(widget.controller, () => _refreshList()),
+          SingleChildScrollView(
+            key: const Key('scrollView_horizontal'),
+            scrollDirection: Axis.horizontal,
+            child: _CountryTable(widget.controller, () => _refreshList()),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -155,6 +171,7 @@ class _FormState extends State<_Form> {
             Container(
                 margin: const EdgeInsets.only(top: 10.0),
                 child: ElevatedButton(
+                  key: const Key('addCountry'),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       await widget._controller.createCountry(Country(
@@ -218,6 +235,7 @@ class _CountryTable extends StatelessWidget {
               DataCell(Text(country.population.toString())),
               DataCell(Text(country.wikiURL)),
               DataCell(IconButton(
+                key: Key('deleteCountry_${country.id}'),
                 icon: const Icon(Icons.delete),
                 onPressed: () async {
                   await _controller.deleteCountry(country.id);
