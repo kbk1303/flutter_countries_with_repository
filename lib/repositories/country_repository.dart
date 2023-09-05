@@ -23,12 +23,12 @@ class CountryRepository implements ICountryRepository {
   }
 
   @override
-  Future<void>? delete(int id) {
+  Future<void>? delete(int? id) {
     return _db.delete(id);
   }
 
   @override
-  Future<Country?> select(int id) async {
+  Future<Country?>? select(int? id) async {
     var item = await _db.select(id);
     return item != null ? Country.fromMap(item) : null;
   }
@@ -40,7 +40,7 @@ class CountryRepository implements ICountryRepository {
   }
 
   @override
-  Future<Country?> update(Country? country) async {
+  Future<Country?>? update(Country? country) async {
     var mapCountry = country?.toMap();
     var updatedCountry = await _db.update(mapCountry!);
     return updatedCountry != null ? Country.fromMap(updatedCountry) : null;

@@ -5,6 +5,17 @@ void main() {
   group('testing the mockup database', () {
     var db = MockupCountryDB();
 
+    test('select item from id', () async {
+      var map1 = createMapItems('Holland');
+      var map2 = createMapItems('Denmark');
+      await db.create(map1);
+      await db.create(map2);
+      expect(db.items.length, 2);
+      Map<String, dynamic>? item = await db.select(2);
+      expect(item, isNotNull);
+      await db.deleteAll();
+    });
+
     test('Create new items', () async {
       var map1 = createMapItems('Holland');
       var map2 = createMapItems('Denmark');

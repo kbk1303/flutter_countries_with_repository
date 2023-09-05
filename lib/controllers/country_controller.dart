@@ -10,7 +10,7 @@ class CountryController {
   @visibleForTesting
   ICountryRepository? get repository => _repo;
 
-  CountryController({required ICountryRepository repository})
+  CountryController({required ICountryRepository? repository})
       : _repo = repository;
 
   @visibleForTesting
@@ -20,7 +20,7 @@ class CountryController {
     return _repo?.selectAll();
   }
 
-  Future<Country?>? getCountryById(int id) {
+  Future<Country?>? getCountryById(int? id) {
     return _repo?.select(id);
   }
 
@@ -28,7 +28,7 @@ class CountryController {
     return _repo?.update(country);
   }
 
-  Future<void>? deleteCountry(int id) {
+  Future<void>? deleteCountry(int? id) {
     return _repo?.delete(id);
   }
 

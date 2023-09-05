@@ -28,7 +28,7 @@ class MockupCountryDB implements ICountryDB {
   }
 
   @override
-  Future<void> delete(int id) async {
+  Future<void> delete(int? id) async {
     _items.removeWhere((item) => item?['id'] == id);
   }
 
@@ -39,7 +39,7 @@ class MockupCountryDB implements ICountryDB {
   }
 
   @override
-  Future<Map<String, dynamic>?> select(int id) async {
+  Future<Map<String, dynamic>?> select(int? id) async {
     return _items.firstWhere((item) => item?['id'] == id, orElse: () => null);
   }
 
@@ -47,7 +47,7 @@ class MockupCountryDB implements ICountryDB {
   Future<Map<String, dynamic>?> update(Map<String, dynamic> item) async {
     await Future.delayed(const Duration(milliseconds: 450));
     var updateItem = select(item['id']);
-    updateItem.then((value) {
+    updateItem.then((value) async {
       value?['name'] =
           value['name'] != item['name'] ? item['name'] : value['name'];
       value?['population'] = value['population'] != item['population']
@@ -56,9 +56,9 @@ class MockupCountryDB implements ICountryDB {
       value?['area'] =
           value['area'] != item['area'] ? item['area'] : value['area'];
       //remove the old entry
-      delete(item['id']);
+      await delete(item['id']);
       //insert the updated item
-      create(value);
+      await create(value);
     });
     //
 

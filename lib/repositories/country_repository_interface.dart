@@ -9,8 +9,8 @@ abstract class ICountryRepository {
   @visibleForTesting
   set database(ICountryDB db);
   Future<List<Country>>? selectAll();
-  Future<Country?> select(int id);
+  Future<Country?>? select(int? id);
   Future<void>? create(Country? country);
-  Future<Country?> update(Country? country);
-  Future<void>? delete(int id);
+  Future<Country?>? update(Country? country);
+  Future<void>? delete(int? id);
 }

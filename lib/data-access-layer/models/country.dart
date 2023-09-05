@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 class Country {
-  final int id;
-  final String name;
-  final String flag;
-  final int area;
-  final int population;
-  final String wikiURL;
+  final int? id;
+  final String? name;
+  final String? flag;
+  final int? area;
+  final int? population;
+  final String? wikiURL;
 
   Country({
     required this.id,

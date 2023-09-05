@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_countries_with_repository/controllers/controllers.dart';
@@ -208,6 +209,7 @@ class _CountryTable extends StatelessWidget {
           if (!snapshot.hasData) {
             return const Center(child: Text('Loading..'));
           } else {
+            debugPrint('snapshot data ${snapshot.data}');
             return DataTable(
                 columns: _createCountryTableColumns(),
                 rows: _createCountryTableRows(snapshot.data ?? []));
@@ -229,11 +231,27 @@ class _CountryTable extends StatelessWidget {
   List<DataRow> _createCountryTableRows(List<Country> countries) {
     return countries
         .map((country) => DataRow(cells: [
-              DataCell(Text(country.name)),
-              DataCell(Text(country.flag)),
+              DataCell(TextFormField(
+                  key: Key('table_name_${country.id}'),
+                  controller: TextEditingController(text: country.name),
+                  keyboardType: TextInputType.name,
+                  onFieldSubmitted: (String? value) async {
+                    if (kDebugMode) {
+                      print('value in onFieldSubmitted: $value');
+                    }
+                    await _controller.updateCountry(Country(
+                        id: country.id,
+                        area: country.area,
+                        flag: country.flag,
+                        population: country.population,
+                        wikiURL: country.wikiURL,
+                        name: value));
+                    _refreshList();
+                  })),
+              DataCell(Text(country.flag!)),
               DataCell(Text(country.area.toString())),
               DataCell(Text(country.population.toString())),
-              DataCell(Text(country.wikiURL)),
+              DataCell(Text(country.wikiURL!)),
               DataCell(IconButton(
                 key: Key('deleteCountry_${country.id}'),
                 icon: const Icon(Icons.delete),
