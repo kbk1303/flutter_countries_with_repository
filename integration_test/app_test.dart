@@ -3,10 +3,11 @@ import 'package:flutter_countries_with_repository/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  //TestWidgetsFlutterBinding.ensureInitialized();
   group('Testing the countries app', () {
     testWidgets('Testing add new countries', (widgetTester) async {
       await widgetTester.pumpWidget(const MyApp());
-
+      //expect(find.byKey(const Key('addCountry')), findsOneWidget);
       // add 10 different countries
       for (int i = 0; i < 10; i++) {
         await widgetTester.enterText(
@@ -21,7 +22,9 @@ void main() {
         await widgetTester.enterText(
             find.widgetWithText(TextFormField, 'Wiki URL'),
             'https://da.wikipedia.org/wiki/Danmark${i + 1}');
-        await widgetTester.tap(find.byKey(const ValueKey('addCountry')));
+        await widgetTester.ensureVisible(find.byKey(const Key('addCountry')));
+        await widgetTester.pumpAndSettle();
+        await widgetTester.tap(find.byKey(const Key('addCountry')));
         await widgetTester.pumpAndSettle();
       }
       //test the scroll for the entire app

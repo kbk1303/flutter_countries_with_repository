@@ -165,7 +165,8 @@ void main() {
         'https://da.wikipedia.org/wiki/Danmark');
 
     // Find og tryk på "Add Country" knappen
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Add Country'));
+    //await tester.tap(find.widgetWithText(ElevatedButton, 'Add Country'));
+    await tester.tap(find.byKey((const ValueKey('addCountry'))));
     await tester.pumpAndSettle();
 
     // Forvent, at det nye land vises i _CountryTable

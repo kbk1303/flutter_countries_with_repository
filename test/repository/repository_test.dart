@@ -17,7 +17,7 @@ void main() {
           population: 6000000,
           wikiURL: 'https://somthing.com/denmark'));
       Country? c = await repository.select(1);
-      expect(c, isNot(isNull));
+      expect(c, isNotNull);
       expect(c?.name, 'Denmark');
     });
 
